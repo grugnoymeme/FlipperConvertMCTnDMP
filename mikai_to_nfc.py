@@ -32,7 +32,7 @@ def convert_to_nfc(input_file: Path, output_file: Path):
 
     data_to_dump = data
     if tag_type == "ST25TB" and subtype == "4K":
-        data_to_dump = data[:0x200]  # fino a block 127 escluso (128*4=512 bytes)
+        data_to_dump = data[:0x200]  # up to block 127 excluded (128*4=512 bytes)
 
     lines = [
         "Filetype: Flipper NFC device",
@@ -63,18 +63,18 @@ def convert_to_nfc(input_file: Path, output_file: Path):
     with open(output_file, 'w') as f:
         f.write('\n'.join(lines))
 
-    print(f"[✓] File .nfc generato: {output_file}")
+    print(f"[✓] .nfc file generated: {output_file}")
     print(f"    UID: {uid_str}")
-    print(f"    Tipo: {tag_type} — Sottotipo: {subtype}")
+    print(f"    Type: {tag_type} — Subtype: {subtype}")
     if atqa is not None:
         print(f"    ATQA: {format_bytes(atqa)}")
     if sak is not None:
         print(f"    SAK: {format_bytes(sak)}")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Convertitore dump binario Mikai in .nfc Flipper Zero")
-    parser.add_argument('-i', '--input', required=True, help="File dump binario input")
-    parser.add_argument('-o', '--output', required=True, help="File .nfc output")
+    parser = argparse.ArgumentParser(description="Binary Mikai dump converter to Flipper Zero .nfc")
+    parser.add_argument('-i', '--input', required=True, help="Input binary dump file")
+    parser.add_argument('-o', '--output', required=True, help="Output .nfc file")
     args = parser.parse_args()
 
     convert_to_nfc(Path(args.input), Path(args.output))
