@@ -9,7 +9,6 @@ def add_spaces_to_hex(in_str):
     return out_str.strip()
 
 def check_uid_size(dump):
-    # dump is a list of hex strings line by line (e.g. 'A0A1A2A3...')
     block0 = dump[0]
     first_byte = block0[:2].upper()
     if first_byte == "88":
