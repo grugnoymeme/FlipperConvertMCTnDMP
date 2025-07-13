@@ -16,8 +16,6 @@ options:
   -o OUTPUT, --output OUTPUT
                         Output path for the .nfc file
   --uid UID             Custom UID (e.g. FE:3B:17:86)
-  --atqa ATQA           Custom ATQA (e.g. 00\ 04 or "00 04")
-  --sak SAK             Custom SAK (e.g. 88)
 ```
 
 ### mct_to_nfc.py:
@@ -33,8 +31,6 @@ options:
   -o OUTPUT_PATH, --output-path OUTPUT_PATH
                         Output .nfc file
   --uid UID             Custom UID (e.g. FE:3B:17:86)
-  --atqa ATQA           Custom ATQA (e.g. 04\ 00 or "04 00")
-  --sak SAK             Custom SAK (e.g. 88)
 ```
 
 ### mikai_to_nfc.py:
