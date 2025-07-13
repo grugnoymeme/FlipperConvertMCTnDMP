@@ -56,19 +56,17 @@ def convert_file(input_path):
     else:
         raise ValueError(f"Unsupported file extension: {input_extension}")
 
-def write_mifare_info(f, dump, uid_override=None, atqa_override=None, sak_override=None):
+def write_mifare_info(f, dump, uid_override=None):
     uid, atqa, sak, card_type = get_uid_and_sak_atqa(dump)
 
     uid = uid_override or uid
-    atqa = atqa_override or atqa
-    sak = sak_override or sak
 
     f.write(f"UID: {add_spaces_to_hex(uid)}\n")
     f.write(f"ATQA: {atqa}\n")
     f.write(f"SAK: {sak}\n")
     f.write(f"Mifare Classic type: {card_type}\n")
 
-def write_flipper_nfc(output_path, dump, uid=None, atqa=None, sak=None):
+def write_flipper_nfc(output_path, dump, uid=None):
     with open(output_path, "w") as f:
         f.write("Filetype: Flipper NFC device\n")
         f.write("Version: 4\n")
@@ -76,7 +74,7 @@ def write_flipper_nfc(output_path, dump, uid=None, atqa=None, sak=None):
         f.write("Device type: Mifare Classic\n")
         f.write("# UID, ATQA and SAK are common for all formats\n")
 
-        write_mifare_info(f, dump, uid, atqa, sak)
+        write_mifare_info(f, dump, uid)
 
         f.write("Data format version: 2\n")
         f.write("# Mifare Classic blocks, '??' means unknown data\n")
@@ -90,8 +88,6 @@ def get_args():
     parser.add_argument("-i", "--input-path", required=True, type=pathlib.Path, help="Input dump file (.mct or .dump)")
     parser.add_argument("-o", "--output-path", required=True, type=pathlib.Path, help="Output .nfc file")
     parser.add_argument("--uid", help="Custom UID (e.g. FE:3B:17:86)")
-    parser.add_argument("--atqa", help="Custom ATQA (e.g. 04\\ 00 or \"04 00\")")
-    parser.add_argument("--sak", help="Custom SAK (e.g. 88)")
     return parser.parse_args()
 
 def main():
@@ -102,7 +98,7 @@ def main():
         return
 
     dump = convert_file(str(args.input_path))
-    write_flipper_nfc(str(args.output_path), dump, args.uid, args.atqa, args.sak)
+    write_flipper_nfc(str(args.output_path), dump, args.uid)
     print(f"[OK] .nfc file created: {args.output_path}")
 
 if __name__ == "__main__":
