@@ -4,6 +4,7 @@ Tool able to convert Mifare CLassic (mini, 1k, 4k) (uid 4/7 byte) and ST25TB 4k 
 ## Usage:
 
 ### mfclassic_bin_to_nfc.py:
+```
 python3 mfclassic_bin_to_nfc.py [-h] -i INPUT -o OUTPUT [--uid UID] [--atqa ATQA] [--sak SAK]
 
 Convert a Mifare Classic dump to a .nfc file for Flipper Zero
@@ -17,8 +18,10 @@ options:
   --uid UID             Custom UID (e.g. FE:3B:17:86)
   --atqa ATQA           Custom ATQA (e.g. 00\ 04 or "00 04")
   --sak SAK             Custom SAK (e.g. 88)
+```
 
 ### mct_to_nfc.py:
+```
 python3 mct_to_nfc.py [-h] -i INPUT_PATH -o OUTPUT_PATH [--uid UID] [--atqa ATQA] [--sak SAK]
 
 Convert Mifare Classic dump (.mct/.dump) to .nfc file for Flipper Zero
@@ -32,8 +35,10 @@ options:
   --uid UID             Custom UID (e.g. FE:3B:17:86)
   --atqa ATQA           Custom ATQA (e.g. 04\ 00 or "04 00")
   --sak SAK             Custom SAK (e.g. 88)
+```
 
 ### mikai_to_nfc.py:
+```
 python3: mikai_to_nfc.py [-h] -i INPUT -o OUTPUT
 
 Binary Mikai dump converter to Flipper Zero .nfc
@@ -44,3 +49,4 @@ options:
                         Input binary dump file
   -o OUTPUT, --output OUTPUT
                         Output .nfc file
+```
