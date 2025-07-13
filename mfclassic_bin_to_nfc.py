@@ -39,15 +39,13 @@ def detect_card_type_and_params(data):
     else:
         raise ValueError(f"Invalid size: {size} bytes. Expected 320 (Mini), 1024 (1K), or 4096 (4K).")
 
-def convert_dump_to_flipper_format(dump_file, output_file, uid=None, atqa=None, sak=None):
+def convert_dump_to_flipper_format(dump_file, output_file, uid=None):
     with open(dump_file, "rb") as f:
         data = f.read()
 
-    card_type, block_count, extracted_uid, default_atqa, default_sak = detect_card_type_and_params(data)
+    card_type, block_count, extracted_uid, atqa, sak = detect_card_type_and_params(data)
 
     uid = uid or extracted_uid
-    atqa = atqa or default_atqa
-    sak = sak or default_sak
 
     print(f"[INFO] Type: Mifare Classic {card_type}")
     print(f"[INFO] UID: {uid}")
@@ -78,14 +76,10 @@ if __name__ == "__main__":
     parser.add_argument("-i", "--input", required=True, help="Path to the .dmp file")
     parser.add_argument("-o", "--output", required=True, help="Output path for the .nfc file")
     parser.add_argument("--uid", help="Custom UID (e.g. FE:3B:17:86)")
-    parser.add_argument("--atqa", help="Custom ATQA (e.g. 00\\ 04 or \"00 04\")")
-    parser.add_argument("--sak", help="Custom SAK (e.g. 88)")
     args = parser.parse_args()
 
     convert_dump_to_flipper_format(
         dump_file=args.input,
         output_file=args.output,
-        uid=args.uid,
-        atqa=args.atqa,
-        sak=args.sak
+        uid=args.uid
     )
