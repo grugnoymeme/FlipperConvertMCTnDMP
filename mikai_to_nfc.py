@@ -32,7 +32,7 @@ def convert_to_nfc(input_file: Path, output_file: Path):
 
     data_to_dump = data
     if tag_type == "ST25TB" and subtype == "4K":
-        data_to_dump = data[:0x200]  # up to block 127 excluded (128*4=512 bytes)
+        data_to_dump = data[:0x200]
 
     lines = [
         "Filetype: Flipper NFC device",
