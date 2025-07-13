@@ -37,7 +37,7 @@ def detect_card_type_and_params(data):
         return "Mini", 20, uid, atqa, sak
 
     else:
-        raise ValueError(f"Dimensione non valida: {size} byte. Attesi 320 (Mini), 1024 (1K) o 4096 (4K).")
+        raise ValueError(f"Invalid size: {size} bytes. Expected 320 (Mini), 1024 (1K), or 4096 (4K).")
 
 def convert_dump_to_flipper_format(dump_file, output_file, uid=None, atqa=None, sak=None):
     with open(dump_file, "rb") as f:
@@ -49,7 +49,7 @@ def convert_dump_to_flipper_format(dump_file, output_file, uid=None, atqa=None, 
     atqa = atqa or default_atqa
     sak = sak or default_sak
 
-    print(f"[INFO] Tipo: Mifare Classic {card_type}")
+    print(f"[INFO] Type: Mifare Classic {card_type}")
     print(f"[INFO] UID: {uid}")
     print(f"[INFO] ATQA: {atqa}")
     print(f"[INFO] SAK: {sak}")
@@ -71,15 +71,15 @@ def convert_dump_to_flipper_format(dump_file, output_file, uid=None, atqa=None, 
             block = data[i*16:(i+1)*16]
             out.write(f"Block {i}: {bytes_to_hex(block)}\n")
 
-    print(f"[OK] File scritto: {output_file}")
+    print(f"[OK] File written: {output_file}")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Converti un dump Mifare Classic in file .nfc per Flipper Zero")
-    parser.add_argument("-i", "--input", required=True, help="Percorso al file .dmp")
-    parser.add_argument("-o", "--output", required=True, help="Percorso di output .nfc")
-    parser.add_argument("--uid", help="UID personalizzato (es: FE:3B:17:86)")
-    parser.add_argument("--atqa", help="ATQA personalizzato (es: 04 00)")
-    parser.add_argument("--sak", help="SAK personalizzato (es: 88)")
+    parser = argparse.ArgumentParser(description="Convert a Mifare Classic dump to a .nfc file for Flipper Zero")
+    parser.add_argument("-i", "--input", required=True, help="Path to the .dmp file")
+    parser.add_argument("-o", "--output", required=True, help="Output path for the .nfc file")
+    parser.add_argument("--uid", help="Custom UID (e.g. FE:3B:17:86)")
+    parser.add_argument("--atqa", help="Custom ATQA (e.g. 00\\ 04 or \"00 04\")")
+    parser.add_argument("--sak", help="Custom SAK (e.g. 88)")
     args = parser.parse_args()
 
     convert_dump_to_flipper_format(
