@@ -1,3 +1,5 @@
 *.nfc
 *.mct
 *.dump
+*.dmp
+*.hex
