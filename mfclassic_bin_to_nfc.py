@@ -4,15 +4,20 @@ import os
 def bytes_to_hex(b):
     return ' '.join(f"{x:02X}" for x in b)
 
-def extract_uid_and_sak(block0):
+def extract_uid_and_sak(block0: bytes):
+    """
+    Estrae UID, tipo UID (4 o 7 byte), e SAK in base alla struttura del blocco 0.
+    """
     if block0[0] == 0x88:
+        # UID a 7 byte: 88 indicatore + 3 byte + 4 byte
         uid = bytes_to_hex(block0[1:4] + block0[4:7])
         uid_type = 7
-        sak = block0[8]
+        sak = block0[8]  # per UID a 7 byte il SAK è al byte 8
     else:
+        # UID a 4 byte
         uid = bytes_to_hex(block0[0:4])
         uid_type = 4
-        sak = block0[8]
+        sak = block0[5]  # per UID a 4 byte il SAK è al byte 5
     return uid, uid_type, f"{sak:02X}"
 
 def detect_card_type_and_params(data):
@@ -20,7 +25,7 @@ def detect_card_type_and_params(data):
     block0 = data[0:16]
     uid, uid_length, sak = extract_uid_and_sak(block0)
 
-    # ATQA dedotto dal tipo UID (standard)
+    # ATQA corretto in base alla lunghezza UID
     if size == 1024:
         atqa = "44 00" if uid_length == 7 else "04 00"
         card_type = "1K"
@@ -37,12 +42,12 @@ def detect_card_type_and_params(data):
         block_count = 20
 
     else:
-        raise ValueError(f"Invalid size: {size} bytes. Expected 320 (Mini), 1024 (1K), or 4096 (4K).")
+        raise ValueError(f"Invalid dump size: {size} bytes. Must be 320 (Mini), 1024 (1K), or 4096 (4K).")
 
     # Controllo SAK valido
     VALID_SAK_VALUES = {"08", "09", "18", "88", "89"}
     if sak.upper() not in VALID_SAK_VALUES:
-        print(f"[WARN] SAK {sak} may be non-standard or custom (e.g. magic card)")
+        print(f"[WARN] SAK {sak} is not standard (possibly custom or magic tag).")
 
     return card_type, block_count, uid, atqa, sak
 
